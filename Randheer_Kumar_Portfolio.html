@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Randheer Kumar — Senior Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0b1220;
+    --navy2: #111b2e;
+    --navy3: #1a2740;
+    --teal: #00c9a7;
+    --teal2: #00a688;
+    --amber: #f5a623;
+    --white: #f0eeea;
+    --muted: #8899aa;
+    --border: rgba(255,255,255,0.07);
+    --card: rgba(26,39,64,0.7);
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'Outfit', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── GRID OVERLAY ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,201,167,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,201,167,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(11,18,32,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: all .3s;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--teal);
+    letter-spacing: .08em;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: .06em;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 2.5rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--teal);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp .6s .2s forwards;
+  }
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    line-height: 1.0;
+    color: var(--white);
+    opacity: 0;
+    animation: fadeUp .7s .35s forwards;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--teal);
+  }
+  .hero-subtitle {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin-top: 1.5rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp .7s .5s forwards;
+  }
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp .7s .65s forwards;
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 12px;
+    border: 1px solid rgba(0,201,167,0.3);
+    border-radius: 2px;
+    color: var(--teal);
+    letter-spacing: .06em;
+  }
+  .badge.amber {
+    border-color: rgba(245,166,35,0.3);
+    color: var(--amber);
+  }
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp .7s .8s forwards;
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .08em;
+    padding: 12px 28px;
+    border-radius: 2px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all .2s;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--teal);
+    color: var(--navy);
+    font-weight: 500;
+  }
+  .btn-primary:hover { background: var(--teal2); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+  .hero-stat-row {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp .7s 1s forwards;
+  }
+  .hero-stat .num {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .hero-stat .lbl {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    margin-top: 4px;
+  }
+
+  .scroll-line {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp .6s 1.2s forwards;
+  }
+  .scroll-line span {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .12em;
+    writing-mode: vertical-rl;
+  }
+  .scroll-line::after {
+    content: '';
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(var(--teal), transparent);
+    animation: lineDown 2s 1.5s infinite;
+  }
+
+  /* ── SECTION COMMON ── */
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2.5rem;
+  }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 3rem;
+  }
+  .section-title em { color: var(--teal); font-style: italic; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--navy2); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-text p {
+    color: #b0bec5;
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+    font-size: 1.05rem;
+  }
+  .about-text p strong { color: var(--white); font-weight: 500; }
+  .about-facts { display: flex; flex-direction: column; gap: 1rem; }
+  .fact-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    border-left: 3px solid var(--teal);
+  }
+  .fact-icon {
+    font-size: 1.2rem;
+    min-width: 28px;
+    margin-top: 2px;
+  }
+  .fact-title { font-size: .85rem; font-weight: 500; color: var(--white); }
+  .fact-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--navy); }
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 0;
+    width: 1px;
+    background: linear-gradient(var(--teal), transparent);
+  }
+  .exp-item {
+    position: relative;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity .5s, transform .5s;
+  }
+  .exp-item.visible { opacity: 1; transform: translateX(0); }
+  .exp-item::before {
+    content: '';
+    position: absolute;
+    left: -2.4rem;
+    top: 8px;
+    width: 10px; height: 10px;
+    background: var(--teal);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--teal);
+  }
+  .exp-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: .08em;
+    margin-bottom: .4rem;
+  }
+  .exp-title { font-size: 1.15rem; font-weight: 600; margin-bottom: .2rem; }
+  .exp-company {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--teal);
+    margin-bottom: .8rem;
+  }
+  .exp-desc { color: #8899aa; font-weight: 300; font-size: .95rem; }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .8rem; }
+  .exp-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    background: rgba(0,201,167,0.08);
+    border: 1px solid rgba(0,201,167,0.15);
+    border-radius: 2px;
+    color: var(--teal);
+  }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--navy2); }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  .skill-group-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .skill-item { margin-bottom: 1.1rem; }
+  .skill-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: .9rem;
+  }
+  .skill-name { font-weight: 400; }
+  .skill-pct { font-family: var(--mono); font-size: 12px; color: var(--teal); }
+  .skill-track {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--amber));
+    border-radius: 2px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(.4,0,.2,1);
+  }
+  .cert-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+    margin-top: 2.5rem;
+  }
+  .cert-card {
+    padding: .85rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: .82rem;
+    color: #9eb3c2;
+    transition: border-color .2s;
+  }
+  .cert-card:hover { border-color: rgba(0,201,167,0.3); }
+  .cert-issuer {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* ── PROJECTS ── */
+  #projects { background: var(--navy); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .2s, transform .2s;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .5s, transform .5s, border-color .2s;
+  }
+  .project-card.visible { opacity: 1; transform: translateY(0); }
+  .project-card:hover { border-color: rgba(0,201,167,0.35); transform: translateY(-3px); }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--teal), transparent);
+  }
+  .project-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .project-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: .6rem;
+    line-height: 1.3;
+  }
+  .project-desc { font-size: .87rem; color: #7a90a0; font-weight: 300; line-height: 1.6; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: 1rem; }
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--amber);
+    padding: 2px 7px;
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.15);
+    border-radius: 2px;
+  }
+  .project-impact {
+    margin-top: 1rem;
+    padding: .6rem .8rem;
+    background: rgba(0,201,167,0.06);
+    border-left: 2px solid var(--teal);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal);
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--navy2);
+    border-top: 1px solid var(--border);
+  }
+  .contact-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 5rem 2.5rem;
+    text-align: center;
+  }
+  .contact-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 1rem;
+  }
+  .contact-sub { color: var(--muted); font-weight: 300; margin-bottom: 2.5rem; }
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .75rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    text-decoration: none;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .06em;
+    transition: all .2s;
+  }
+  .contact-link:hover { border-color: var(--teal); color: var(--teal); }
+  .contact-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+  footer span { color: var(--teal); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes lineDown {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    51%  { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,201,167,.4); }
+    50%       { box-shadow: 0 0 0 8px rgba(0,201,167,0); }
+  }
+  .exp-item::before { animation: pulse 3s infinite; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { gap: 1rem; }
+    .about-grid, .skills-grid, .projects-grid { grid-template-columns: 1fr; }
+    .hero-stat-row { gap: 1.5rem; flex-wrap: wrap; }
+    .cert-grid { grid-template-columns: 1fr; }
+    .section-inner { padding: 3.5rem 1.25rem; }
+    #hero { padding: 5rem 1.25rem 3rem; }
+    .contact-inner { padding: 3.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">RK // Data Analyst</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-tag">// Available for Senior Data Analyst roles · Delhi NCR</div>
+  <h1 class="hero-name">Randheer<br><em>Kumar</em></h1>
+  <p class="hero-subtitle">Senior Data Analyst & BI Specialist turning complex government data into decisions that matter — 7+ years across the Ministry of Education, NETF & AICTE.</p>
+  <div class="hero-badges">
+    <span class="badge">Power BI</span>
+    <span class="badge">SQL</span>
+    <span class="badge">Python</span>
+    <span class="badge">MongoDB</span>
+    <span class="badge">ETL & Data Modeling</span>
+    <span class="badge amber">Ministry of Education</span>
+    <span class="badge amber">NETF · AICTE</span>
+  </div>
+  <div class="hero-cta">
+    <a href="#contact" class="btn btn-primary">Get in touch</a>
+    <a href="#experience" class="btn btn-outline">View experience</a>
+  </div>
+  <div class="hero-stat-row">
+    <div class="hero-stat"><div class="num">7+</div><div class="lbl">Years experience</div></div>
+    <div class="hero-stat"><div class="num">3</div><div class="lbl">Gov. organisations</div></div>
+    <div class="hero-stat"><div class="num">10+</div><div class="lbl">Certifications</div></div>
+    <div class="hero-stat"><div class="num">∞</div><div class="lbl">Dashboards built</div></div>
+  </div>
+  <div class="scroll-line"><span>scroll</span></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">// 01 · About</div>
+    <h2 class="section-title">Data that <em>drives</em><br>decisions</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a <strong>Senior Data Analyst & BI Specialist</strong> based in Delhi, India, with over 7 years of experience building enterprise-grade dashboards, data pipelines, and analytics solutions for some of India's most critical government institutions.</p>
+        <p>Currently deployed at the <strong>National Educational Technology Forum (NETF)</strong> under the Ministry of Education, I design real-time Power BI dashboards, manage multi-source data integrations, and apply AI-driven analytics to inform national-level education policy.</p>
+        <p>Before that, I spent nearly 3 years as IT Consultant at <strong>AICTE</strong>, coordinating data operations for major national examinations including JEE Mains, CUET UG & PG, and UGC NET — managing institutional data for millions of students.</p>
+        <p>I believe the most powerful thing an analyst can do is make complexity <strong>invisible</strong> — translating messy, multi-source data into clean, actionable insights that decision-makers can actually use.</p>
+      </div>
+      <div class="about-facts">
+        <div class="fact-row">
+          <div class="fact-icon">📍</div>
+          <div><div class="fact-title">Delhi, India</div><div class="fact-sub">Open to hybrid & remote roles · NCR preferred</div></div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-icon">🎓</div>
+          <div><div class="fact-title">B.Tech — Electronics & Communication</div><div class="fact-sub">Bhagwant University, Ajmer · 2019 · 74.52%</div></div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-icon">🏛️</div>
+          <div><div class="fact-title">Government Sector Specialist</div><div class="fact-sub">Ministry of Education · NETF · AICTE · Network House</div></div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-icon">🌐</div>
+          <div><div class="fact-title">UNESCO India-Africa Hackathon 2022</div><div class="fact-sub">Organiser & participant certificate</div></div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-icon">💬</div>
+          <div><div class="fact-title">Languages</div><div class="fact-sub">Hindi · English (professional working proficiency)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">// 02 · Experience</div>
+    <h2 class="section-title">Where I've <em>delivered</em></h2>
+    <div class="timeline">
+
+      <div class="exp-item">
+        <div class="exp-date">Dec 2024 — Present</div>
+        <div class="exp-title">Sr. Software Engineer (Data & Analytics)</div>
+        <div class="exp-company">National Educational Technology Forum (NETF) · Ministry of Education — via Trigyn Technologies · New Delhi</div>
+        <div class="exp-desc">Design, develop, and optimise enterprise Power BI dashboards delivering real-time insights aligned with national education KPIs. Manage and validate project data across multiple integrated sources. Perform trend, risk, and opportunity analysis — generating KPI reports and executive presentations. Drive process automation using AI, machine learning analytics, and advanced data workflows. Collaborate with cross-functional government teams, gather requirements, and train end-users on dashboard usage.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Power BI</span>
+          <span class="exp-tag">Python</span>
+          <span class="exp-tag">SQL</span>
+          <span class="exp-tag">AI Analytics</span>
+          <span class="exp-tag">ETL</span>
+          <span class="exp-tag">KPI Reporting</span>
+          <span class="exp-tag">Process Automation</span>
+          <span class="exp-tag">Stakeholder Management</span>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">Jan 2022 — Dec 2024</div>
+        <div class="exp-title">IT Consultant</div>
+        <div class="exp-company">All India Council for Technical Education (AICTE) · Ministry of Education — via BECIL · New Delhi</div>
+        <div class="exp-desc">Contributed to government approval-process portals using IT/ITeS solutions, managing multi-year institutional datasets. Maintained e-Office databases and trained users on IT-enabled services. Served as IT Coordinator for national examinations — JEE Mains Session-I, UGC UDAAN, VRIKSH, CUET UG & PG, and UGC NET — verifying institutional data and ensuring smooth execution for millions of exam participants through advanced IT frameworks.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Database Administration</span>
+          <span class="exp-tag">e-Office</span>
+          <span class="exp-tag">IT Coordination</span>
+          <span class="exp-tag">Data Verification</span>
+          <span class="exp-tag">JEE / CUET / UGC NET</span>
+          <span class="exp-tag">Process Handbooks</span>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">Jul 2019 — Dec 2021</div>
+        <div class="exp-title">IT Engineer</div>
+        <div class="exp-company">Network House · New Delhi</div>
+        <div class="exp-desc">Managed and maintained websites and databases — implementing updates, ensuring security, optimising performance, and resolving functionality issues. Provided system support by monitoring performance, troubleshooting technical issues, and collaborating with teams to deliver technology-driven solutions.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Web Management</span>
+          <span class="exp-tag">Database Ops</span>
+          <span class="exp-tag">System Support</span>
+          <span class="exp-tag">IT Security</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-label">// 03 · Skills & Certifications</div>
+    <h2 class="section-title">Tools &amp; <em>expertise</em></h2>
+    <div class="skills-grid">
+      <div>
+        <div class="skill-group-title">// Technical proficiency</div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Power BI & Dashboard Design</span><span class="skill-pct">95%</span></div><div class="skill-track"><div class="skill-fill" data-width="95"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">SQL & Database Administration</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-fill" data-width="85"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Python & Data Analytics</span><span class="skill-pct">75%</span></div><div class="skill-track"><div class="skill-fill" data-width="75"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Advanced Excel & Office Suite</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">MongoDB</span><span class="skill-pct">70%</span></div><div class="skill-track"><div class="skill-fill" data-width="70"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">ETL & Data Modeling</span><span class="skill-pct">80%</span></div><div class="skill-track"><div class="skill-fill" data-width="80"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">API Integration & Automation</span><span class="skill-pct">72%</span></div><div class="skill-track"><div class="skill-fill" data-width="72"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">HTML, CSS & JavaScript</span><span class="skill-pct">65%</span></div><div class="skill-track"><div class="skill-fill" data-width="65"></div></div></div>
+      </div>
+      <div>
+        <div class="skill-group-title">// Soft skills</div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Stakeholder Management</span><span class="skill-pct">92%</span></div><div class="skill-track"><div class="skill-fill" data-width="92"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Cross-functional Collaboration</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Problem Solving & Critical Thinking</span><span class="skill-pct">88%</span></div><div class="skill-track"><div class="skill-fill" data-width="88"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Team Leadership & Mentoring</span><span class="skill-pct">80%</span></div><div class="skill-track"><div class="skill-fill" data-width="80"></div></div></div>
+
+        <div class="skill-group-title" style="margin-top:2rem">// Certifications</div>
+        <div class="cert-grid">
+          <div class="cert-card">Business Intelligence using Power BI<div class="cert-issuer">— Independent · BI Specialist</div></div>
+          <div class="cert-card">Mastering Modern Excel<div class="cert-issuer">— Microsoft Excel Advanced</div></div>
+          <div class="cert-card">Basic to Advanced SQL<div class="cert-issuer">— SQL Foundations</div></div>
+          <div class="cert-card">Introduction to MongoDB<div class="cert-issuer">— MongoDB University</div></div>
+          <div class="cert-card">Technical Support Fundamentals<div class="cert-issuer">— Google</div></div>
+          <div class="cert-card">IT Security: Defense Against Digital Dark Arts<div class="cert-issuer">— Google</div></div>
+          <div class="cert-card">System Admin & IT Infrastructure<div class="cert-issuer">— Google</div></div>
+          <div class="cert-card">HTML, CSS & JS for Web Developers<div class="cert-issuer">— Johns Hopkins University</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">// 04 · Key Projects</div>
+    <h2 class="section-title">Work that <em>mattered</em></h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-num">01 // NETF · 2025</div>
+        <div class="project-title">National Education KPI Dashboard Suite</div>
+        <div class="project-desc">Designed and deployed a real-time Power BI dashboard suite for NETF, aggregating data from multiple government sources to deliver live KPI tracking for Ministry of Education decision-makers.</div>
+        <div class="project-tags"><span class="project-tag">Power BI</span><span class="project-tag">SQL</span><span class="project-tag">ETL</span><span class="project-tag">Multi-source Integration</span></div>
+        <div class="project-impact">// National-level education policy reporting</div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">02 // AICTE · 2022–2024</div>
+        <div class="project-title">Approval Process Portal & Data Management</div>
+        <div class="project-desc">Contributed to IT/ITeS-driven government approval portals managing multi-year institutional data. Developed Approval Process Handbooks with data-backed improvement insights used across AICTE operations.</div>
+        <div class="project-tags"><span class="project-tag">Database Admin</span><span class="project-tag">Process Design</span><span class="project-tag">e-Office</span><span class="project-tag">Data Governance</span></div>
+        <div class="project-impact">// 3 years · Operational across all AICTE institutions</div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">03 // AICTE · 2022–2024</div>
+        <div class="project-title">National Exam IT Coordination (JEE, CUET, UGC NET)</div>
+        <div class="project-desc">Served as IT Coordinator for JEE Mains Session-I, CUET UG & PG, UGC NET, UGC UDAAN, and VRIKSH — verifying and managing institutional data for millions of exam participants, ensuring zero data errors at scale.</div>
+        <div class="project-tags"><span class="project-tag">Data Verification</span><span class="project-tag">Stakeholder Coordination</span><span class="project-tag">IT Frameworks</span></div>
+        <div class="project-impact">// Millions of students · Zero critical data errors</div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">04 // NETF · 2025</div>
+        <div class="project-title">AI-Driven Analytics Workflow Automation</div>
+        <div class="project-desc">Leveraged emerging AI and automation technologies to enhance data workflows, reduce manual reporting time, and improve dashboard performance across the NETF analytics stack.</div>
+        <div class="project-tags"><span class="project-tag">AI Analytics</span><span class="project-tag">Python</span><span class="project-tag">Process Automation</span><span class="project-tag">Power BI</span></div>
+        <div class="project-impact">// Reduced manual reporting overhead</div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">05 // Network House · 2019–2021</div>
+        <div class="project-title">Website & Database Maintenance Platform</div>
+        <div class="project-desc">Managed and maintained a portfolio of websites and databases — implementing security patches, performance optimisations, and resolving functionality issues to ensure maximum uptime and data integrity.</div>
+        <div class="project-tags"><span class="project-tag">Web Management</span><span class="project-tag">Database Ops</span><span class="project-tag">IT Security</span><span class="project-tag">System Monitoring</span></div>
+        <div class="project-impact">// Multi-site · Consistent uptime</div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">06 // 2022</div>
+        <div class="project-title">UNESCO India-Africa Hackathon 2022</div>
+        <div class="project-desc">Participated in and co-organised the UNESCO India-Africa Hackathon 2022 — a flagship international tech innovation event. Received organiser certificate recognising leadership in the event's execution.</div>
+        <div class="project-tags"><span class="project-tag">UNESCO</span><span class="project-tag">Innovation</span><span class="project-tag">Leadership</span><span class="project-tag">International</span></div>
+        <div class="project-impact">// International recognition · 2022</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-label" style="text-align:center">// 05 · Contact</div>
+    <h2 class="contact-title">Let's <em>build</em> something</h2>
+    <p class="contact-sub">Open to Senior Data Analyst, BI Analyst, and related roles in Delhi NCR. Hybrid and remote options welcome.</p>
+    <div class="contact-links">
+      <a href="mailto:randhirkumarverma23@gmail.com" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        randhirkumarverma23@gmail.com
+      </a>
+      <a href="tel:+917654555324" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+        +91 76545 55324
+      </a>
+      <a href="https://linkedin.com/in/rk7654" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        linkedin.com/in/rk7654
+      </a>
+      <a href="#" class="contact-link" onclick="alert('Add your Naukri profile URL here'); return false;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Naukri Profile
+      </a>
+    </div>
+    <a href="mailto:randhirkumarverma23@gmail.com" class="btn btn-primary" style="display:inline-block;font-size:13px">Send me a message →</a>
+  </div>
+</section>
+
+<footer>
+  Built &amp; designed for <span>Randheer Kumar</span> · Senior Data Analyst · Delhi, India · 2025
+</footer>
+
+<script>
+  // ── Skill bar animation on scroll
+  const skillFills = document.querySelectorAll('.skill-fill');
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const w = e.target.getAttribute('data-width');
+        e.target.style.width = w + '%';
+      }
+    });
+  }, { threshold: 0.3 });
+  skillFills.forEach(f => skillObserver.observe(f));
+
+  // ── Fade in timeline & project cards
+  const fadeEls = document.querySelectorAll('.exp-item, .project-card');
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.15 });
+  fadeEls.forEach(el => fadeObs.observe(el));
+
+  // ── Navbar shrink on scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.padding =
+      window.scrollY > 60 ? '.65rem 2.5rem' : '1rem 2.5rem';
+  });
+</script>
+</body>
+</html>
