@@ -58,21 +58,82 @@
     z-index: 0;
   }
 
-  nav {
+  /* ── TICKER BANNER ── */
+  .ticker-wrap {
     position: fixed;
     top: 0; left: 0; right: 0;
+    z-index: 101;
+    background: var(--teal);
+    overflow: hidden;
+    height: 28px;
+    display: flex;
+    align-items: center;
+  }
+  .ticker-track {
+    display: flex;
+    white-space: nowrap;
+    animation: ticker 25s linear infinite;
+  }
+  .ticker-track span {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--navy);
+    font-weight: 500;
+    letter-spacing: .1em;
+    padding: 0 3rem;
+  }
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 28px; left: 0; right: 0;
     z-index: 100;
-    padding: 1rem 2.5rem;
+    padding: .75rem 2.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(11,18,32,0.85);
+    background: rgba(11,18,32,0.95);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     transition: all .3s;
+    width: 100%;
   }
-  .nav-logo { font-family: var(--mono); font-size: 13px; color: var(--teal); letter-spacing: .08em; }
-  .nav-links { display: flex; gap: 2rem; }
+  .nav-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--teal);
+    letter-spacing: .08em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .nav-contact {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+  }
+  .nav-contact a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: .04em;
+    transition: color .2s;
+  }
+  .nav-contact a:hover { color: var(--teal); }
+  .nav-contact svg { width: 11px; height: 11px; flex-shrink: 0; }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
   .nav-links a { font-family: var(--mono); font-size: 12px; color: var(--muted); text-decoration: none; letter-spacing: .06em; transition: color .2s; }
   .nav-links a:hover { color: var(--teal); }
 
@@ -83,17 +144,28 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 6rem 2.5rem 4rem;
+    padding: 8rem 2.5rem 4rem;
     max-width: 1100px;
     margin: 0 auto;
   }
-  .hero-tag { font-family: var(--mono); font-size: 12px; color: var(--teal); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp .6s .2s forwards; }
+
+  /* ── CHANGE 2: hero-tag — amber colour + larger size ── */
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--amber);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp .6s .2s forwards;
+  }
+
   .hero-name { font-family: var(--serif); font-size: clamp(3.5rem, 8vw, 7rem); line-height: 1.0; color: var(--white); opacity: 0; animation: fadeUp .7s .35s forwards; }
   .hero-name em { font-style: italic; color: var(--teal); }
   .hero-subtitle { font-size: 1.15rem; color: var(--muted); max-width: 580px; margin-top: 1.5rem; font-weight: 300; opacity: 0; animation: fadeUp .7s .5s forwards; line-height: 1.6; }
   .hero-subtitle strong { font-weight: 600; color: var(--white); display: block; margin-bottom: 4px; }
 
-  /* ── HERO BADGES — fixed 2-row layout ── */
   .hero-badges {
     display: grid;
     grid-template-columns: repeat(5, auto);
@@ -103,16 +175,7 @@
     opacity: 0;
     animation: fadeUp .7s .65s forwards;
   }
-  .badge {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 5px 12px;
-    border: 1px solid rgba(0,201,167,0.3);
-    border-radius: 2px;
-    color: var(--teal);
-    letter-spacing: .06em;
-    white-space: nowrap;
-  }
+  .badge { font-family: var(--mono); font-size: 11px; padding: 5px 12px; border: 1px solid rgba(0,201,167,0.3); border-radius: 2px; color: var(--teal); letter-spacing: .06em; white-space: nowrap; }
   .badge.amber { border-color: rgba(245,166,35,0.3); color: var(--amber); }
 
   .hero-cta { display: flex; gap: 1rem; margin-top: 2.5rem; opacity: 0; animation: fadeUp .7s .8s forwards; }
@@ -155,33 +218,10 @@
   .exp-title { font-size: 1.15rem; font-weight: 600; margin-bottom: .2rem; }
   .exp-company { font-family: var(--mono); font-size: 12px; color: var(--teal); margin-bottom: .8rem; }
   .exp-desc { color: #8899aa; font-weight: 300; font-size: .95rem; }
-
-  /* ── BULLET FIX — scoped only to exp-desc ── */
-  .exp-desc ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .exp-desc ul li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .exp-desc ul li .arrow {
-    flex-shrink: 0;
-    margin-top: 3px;
-    color: var(--teal);
-    font-family: var(--mono);
-    font-size: .9rem;
-  }
-  .exp-desc ul li .text {
-    flex: 1;
-    min-width: 0;
-  }
-
+  .exp-desc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .exp-desc ul li { display: flex; align-items: flex-start; gap: 10px; }
+  .exp-desc ul li .arrow { flex-shrink: 0; margin-top: 3px; color: var(--teal); font-family: var(--mono); font-size: .9rem; }
+  .exp-desc ul li .text { flex: 1; min-width: 0; }
   .exp-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .8rem; }
   .exp-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: rgba(0,201,167,0.08); border: 1px solid rgba(0,201,167,0.15); border-radius: 2px; color: var(--teal); }
 
@@ -194,10 +234,9 @@
   .skill-pct { font-family: var(--mono); font-size: 12px; color: var(--teal); }
   .skill-track { height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
   .skill-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--amber)); border-radius: 2px; width: 0; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
-  .cert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: 2.5rem; }
- .cert-card { padding: .85rem 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 4px; font-size: .82rem; color: var(--white); font-weight: 500; transition: border-color .2s; }
- .cert-card:hover { border-color: rgba(0,201,167,0.3); }
- .cert-issuer { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 3px; font-weight: 400; }
+  .cert-card { padding: .85rem 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 4px; font-size: .82rem; color: var(--white); font-weight: 500; transition: border-color .2s; }
+  .cert-card:hover { border-color: rgba(0,201,167,0.3); }
+  .cert-issuer { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 3px; font-weight: 400; }
 
   #projects { background: var(--navy); }
   .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -233,7 +272,6 @@
     .nav-links { gap: 1rem; }
     .about-grid, .skills-grid, .projects-grid { grid-template-columns: 1fr; }
     .hero-stat-row { gap: 1.5rem; }
-    .cert-grid { grid-template-columns: 1fr; }
     .section-inner { padding: 3.5rem 1.25rem; }
     #hero { padding: 5rem 1.25rem 3rem; }
     .contact-inner { padding: 3.5rem 1.25rem; }
@@ -243,12 +281,38 @@
 </head>
 <body>
 
+<!-- SCROLLING TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span>// Available for Senior Data Analyst &amp; related roles · Delhi NCR · Open to Regular, Hybrid &amp; Remote</span>
+    <span>// Available for Senior Data Analyst &amp; related roles · Delhi NCR · Open to Regular, Hybrid &amp; Remote</span>
+    <span>// Available for Senior Data Analyst &amp; related roles · Delhi NCR · Open to Regular, Hybrid &amp; Remote</span>
+    <span>// Available for Senior Data Analyst &amp; related roles · Delhi NCR · Open to Regular, Hybrid &amp; Remote</span>
+  </div>
+</div>
+
 <nav id="navbar">
-  <div class="nav-logo">RK // Sr. Software Engineer | Data Analyst | Power BI | BI Analyst</div>
+  <div class="nav-left">
+    <div class="nav-logo">RK // Sr. Software Engineer | Data Analyst | Power BI | BI Analyst</div>
+    <div class="nav-contact">
+      <a href="mailto:randhirkumarverma23@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        randhirkumarverma23@gmail.com
+      </a>
+      <a href="tel:+917654555324">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+        +91 76545 55324
+      </a>
+      <a href="https://linkedin.com/in/rk7654" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        linkedin.com/in/rk7654
+      </a>
+    </div>
+  </div>
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#experience">Experience</a>
-    <a href="#skills">Skills & Certifications</a>
+    <a href="#skills">Skills &amp; Certifications</a>
     <a href="#projects">Projects</a>
     <a href="#contact">Contact</a>
   </div>
@@ -332,16 +396,10 @@
           </ul>
         </div>
         <div class="exp-tags">
-          <span class="exp-tag">Power BI</span>
-          <span class="exp-tag">Python</span>
-          <span class="exp-tag">SQL</span>
-          <span class="exp-tag">AI Analytics</span>
-          <span class="exp-tag">ETL</span>
-          <span class="exp-tag">KPI Reporting</span>
-          <span class="exp-tag">Process Automation</span>
-          <span class="exp-tag">Stakeholder Management</span>
-          <span class="exp-tag">Project Management</span>
-          <span class="exp-tag">Team Building &amp; Leadership</span>
+          <span class="exp-tag">Power BI</span><span class="exp-tag">Python</span><span class="exp-tag">SQL</span>
+          <span class="exp-tag">AI Analytics</span><span class="exp-tag">ETL</span><span class="exp-tag">KPI Reporting</span>
+          <span class="exp-tag">Process Automation</span><span class="exp-tag">Stakeholder Management</span>
+          <span class="exp-tag">Project Management</span><span class="exp-tag">Team Building &amp; Leadership</span>
         </div>
       </div>
 
@@ -351,17 +409,15 @@
         <div class="exp-company">All India Council for Technical Education (AICTE) · Ministry of Education — Deployed through BECIL · New Delhi</div>
         <div class="exp-desc">
           <ul>
-            <li><span class="arrow">→</span><span class="text">Contribute to government projects by developing and enhancing approval process portals using IT/ITeS solutions, managing multi-year data, and preparing Approval Process Handbooks with insights for process improvement</span></li>
-            <li><span class="arrow">→</span><span class="text">Provide technical support, maintain e-Office databases, and train users to ensure efficient adoption of IT-enabled services</span></li>
-            <li><span class="arrow">→</span><span class="text">Act as IT Coordinator for national-level government projects, managing technical support, database operations, and stakeholder coordination, including verification and confirmation of institutional data for major examinations such as JEE Mains Session-I, UGC UDAAN, VRIKSH, CUET UG & PG, and UGC NET, ensuring smooth and efficient execution through advanced IT/ITeS frameworks</span></li>
+            <li><span class="arrow">→</span><span class="text">Contributed to government projects by developing and enhancing approval process portals using IT/ITeS solutions, managing multi-year data, and preparing Approval Process Handbooks with insights for process improvement</span></li>
+            <li><span class="arrow">→</span><span class="text">Provided technical support, maintained e-Office databases, and trained users to ensure efficient adoption of IT-enabled services</span></li>
+            <li><span class="arrow">→</span><span class="text">Acted as IT Coordinator for national-level government projects, managing technical support, database operations, and stakeholder coordination, including verification of institutional data for JEE Mains Session-I, UGC UDAAN, VRIKSH, CUET UG &amp; PG, and UGC NET</span></li>
+          </ul>
         </div>
         <div class="exp-tags">
-          <span class="exp-tag">Database Administration</span>
-          <span class="exp-tag">e-Office</span>
-          <span class="exp-tag">IT Coordination</span>
-          <span class="exp-tag">Data Verification</span>
-          <span class="exp-tag">JEE / CUET / UGC NET</span>
-          <span class="exp-tag">Approval Process Handbooks</span>
+          <span class="exp-tag">Database Administration</span><span class="exp-tag">e-Office</span>
+          <span class="exp-tag">IT Coordination</span><span class="exp-tag">Data Verification</span>
+          <span class="exp-tag">JEE / CUET / UGC NET</span><span class="exp-tag">Approval Process Handbooks</span>
         </div>
       </div>
 
@@ -376,10 +432,8 @@
           </ul>
         </div>
         <div class="exp-tags">
-          <span class="exp-tag">Web Management</span>
-          <span class="exp-tag">Database Ops</span>
-          <span class="exp-tag">System Support</span>
-          <span class="exp-tag">IT Security</span>
+          <span class="exp-tag">Web Management</span><span class="exp-tag">Database Ops</span>
+          <span class="exp-tag">System Support</span><span class="exp-tag">IT Security</span>
         </div>
       </div>
 
@@ -391,8 +445,7 @@
   <div class="section-inner">
     <div class="section-label">// 03 · Skills &amp; Certifications</div>
     <h2 class="section-title">Tools &amp; <em>expertise</em></h2>
-   
-    <!-- Skills bars — 2 columns -->
+
     <div class="skills-grid">
       <div>
         <div class="skill-group-title">// Technical proficiency</div>
@@ -407,19 +460,19 @@
       </div>
       <div>
         <div class="skill-group-title">// Soft skills</div>
-        <div class="skill-item"><div class="skill-top"><span class="skill-name">Team Building & Leadership</span><span class="skill-pct">92%</span></div><div class="skill-track"><div class="skill-fill" data-width="92"></div></div></div>
-        <div class="skill-item"><div class="skill-top"><span class="skill-name">Time Management</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" data-width="92"></div></div></div>
-        <div class="skill-item"><div class="skill-top"><span class="skill-name">Decision Making</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-fill" data-width="92"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Team Building &amp; Leadership</span><span class="skill-pct">92%</span></div><div class="skill-track"><div class="skill-fill" data-width="92"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Time Management</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Decision Making</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-fill" data-width="85"></div></div></div>
         <div class="skill-item"><div class="skill-top"><span class="skill-name">Stakeholder Management</span><span class="skill-pct">92%</span></div><div class="skill-track"><div class="skill-fill" data-width="92"></div></div></div>
         <div class="skill-item"><div class="skill-top"><span class="skill-name">Cross-functional Collaboration</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90"></div></div></div>
         <div class="skill-item"><div class="skill-top"><span class="skill-name">Problem Solving &amp; Critical Thinking</span><span class="skill-pct">88%</span></div><div class="skill-track"><div class="skill-fill" data-width="88"></div></div></div>
         <div class="skill-item"><div class="skill-top"><span class="skill-name">Team Leadership &amp; Mentoring</span><span class="skill-pct">80%</span></div><div class="skill-track"><div class="skill-fill" data-width="80"></div></div></div>
-        <div class="skill-item"><div class="skill-top"><span class="skill-name">Innovation &amp; Creativity</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" data-width="92"></div></div></div>
+        <div class="skill-item"><div class="skill-top"><span class="skill-name">Innovation &amp; Creativity</span><span class="skill-pct">90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90"></div></div></div>
       </div>
     </div>
 
-    <!-- Certifications — full width 4 columns below skills -->
-    <div style="margin-top:3rem">
+    <!-- Certifications — full width 4 columns -->
+    <div style="margin-top:3rem" id="certifications">
       <div class="skill-group-title">// Certifications</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:1rem">
         <div class="cert-card">Business Intelligence using Power BI<div class="cert-issuer">— Independent · BI Specialist</div></div>
@@ -433,9 +486,6 @@
       </div>
     </div>
 
-  </div>
-</section>
-    </div>
   </div>
 </section>
 
@@ -540,7 +590,7 @@
 
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').style.padding =
-      window.scrollY > 60 ? '.65rem 2.5rem' : '1rem 2.5rem';
+      window.scrollY > 60 ? '.5rem 2.5rem' : '.75rem 2.5rem';
   });
 </script>
 </body>
